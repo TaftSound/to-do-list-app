@@ -1,4 +1,4 @@
-import helloModule from "./modules/hello.mjs"
 import "./style.css"
+import manipulateDOM from "./modules/DOM-manipulation.mjs"
 
-helloModule.sayHello()
+manipulateDOM.createPageStructure()

@@ -12,4 +12,19 @@
 body {
   font-family: var(--main-font);
   font-size: 16px;
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-template-rows: min-content 1fr;
+  min-height: 100vh;
+  margin: 0px;
+}
+
+.header {
+  grid-column: 1/3;
+  height: clamp(65px, 13vh, 100px);
+}
+
+.sidebar {
+  grid-column: 1/2;
+  width: clamp(175px, 25vw, 250px);
 }
