@@ -15,3 +15,4 @@ taskData.addTask(
 manipulateDOM.displayTask('Do some works', '09/01/2022')
 manipulateDOM.displayTask('Do some other works', '09/02/2022')
 manipulateDOM.displayCurrentCategory('Work Stuff')
+manipulateDOM.displayNewTaskButton()

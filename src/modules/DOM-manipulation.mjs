@@ -1,4 +1,5 @@
 import calendarIcon from '../images/cal-clock.svg'
+import plusIcon from '../images/plus-circle-outline.svg'
 
 const header = document.createElement('div')
 const sidebar = document.createElement('div')
@@ -12,6 +13,18 @@ const manipulateDOM = {
     document.body.appendChild(header)
     document.body.appendChild(sidebar)
     document.body.appendChild(content)
+  },
+  displayNewTaskButton: () => {
+    const newTaskButton = document.createElement('button')
+    const newTaskIcon = document.createElement('svg')
+
+    newTaskButton.classList.add('new-task-button')
+    newTaskIcon.classList.add('new-task-icon')
+
+    newTaskIcon.innerHTML = plusIcon
+
+    content.appendChild(newTaskButton)
+    newTaskButton.appendChild(newTaskIcon)
   },
   displayCurrentCategory: (currentCategory) => {
     const categoryHeader = document.createElement('h2')
@@ -36,8 +49,6 @@ const manipulateDOM = {
     task.textContent = newTask
     dueDate.textContent = newDueDate
     dateIcon.innerHTML = calendarIcon
-    console.log(calendarIcon)
-    console.log(dateIcon)
 
     content.appendChild(taskContainer)
     taskContainer.appendChild(checkButton)
