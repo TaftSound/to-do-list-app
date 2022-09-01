@@ -6,6 +6,16 @@ const header = document.createElement('div')
 const sidebar = document.createElement('div')
 const content = document.createElement('div')
 
+// Create elements stored in Document Fragments ==================
+const createPageStructure = () => {
+  header.classList.add('header')
+  sidebar.classList.add('sidebar')
+  content.classList.add('content')
+  document.body.appendChild(header)
+  document.body.appendChild(sidebar)
+  document.body.appendChild(content)
+}
+
 const createNewTaskForm = () => {
   const newFragment = new DocumentFragment()
   const formContainer = document.createElement('div')
@@ -61,11 +71,46 @@ const createNewTaskButton = () => {
   newTaskButton.appendChild(newTaskIcon)
 
   newTaskButton.addEventListener('click', () => {
-    displayNewTaskForm()
-    removeNewTaskButton()
+    PubSub.publish('open task form')
   })
 
   return newFragment
+}
+
+const createNewTask = (newTask, newDueDate, newNotes) => {
+  const newFragment = new DocumentFragment()
+  const taskContainer = document.createElement('div')
+  const checkButton = document.createElement('input')
+  const task = document.createElement('p')
+  const dueDateDiv = document.createElement('div')
+  const dateIcon = document.createElement('svg')
+  const dueDate = document.createElement('p')
+
+  taskContainer.classList.add('task-container')
+  task.classList.add('task')
+  dueDateDiv.classList.add('due-date-container')
+  checkButton.setAttribute('type', 'checkbox')
+  dateIcon.classList.add('date-icon')
+  dueDate.classList.add('due-date')
+
+  task.textContent = newTask
+  dueDate.textContent = newDueDate
+  dateIcon.innerHTML = calendarIcon
+
+  newFragment.appendChild(taskContainer)
+  taskContainer.appendChild(checkButton)
+  taskContainer.appendChild(task)
+  taskContainer.appendChild(dueDateDiv)
+  dueDateDiv.appendChild(dateIcon)
+  dueDateDiv.appendChild(dueDate)
+
+  return newFragment
+}
+
+// Display and remove elements =================================
+const displayTask = (newTask, newDueDate, newNotes) => {
+  const task = createNewTask(newTask, newDueDate, newNotes)
+  content.appendChild(task)
 }
 const displayNewTaskForm = () => {
   const newTaskForm = createNewTaskForm()
@@ -84,50 +129,34 @@ const removeNewTaskButton = () => {
   newTaskButton[0].remove()
 }
 
-addEventListener('DOMContentLoaded', displayNewTaskButton)
-PubSub.subscribe('create new task', removeNewTaskForm)
-PubSub.subscribe('create new task', displayNewTaskButton)
+// Render display from data ===================================
+
+// Add listeners and subscribers ==============================
+PubSub.subscribe('display new task bttn', () => {
+  displayNewTaskButton()
+})
+PubSub.subscribe('open task form', () => {
+  removeNewTaskButton()
+  displayNewTaskForm()
+})
+PubSub.subscribe('create new task', (msg, data) => {
+  removeNewTaskForm()
+  displayTask(...data)
+  displayNewTaskButton()
+})
+PubSub.subscribe('create task', (msg, data) => {
+  displayTask(...data)
+})
 
 // Module to be exported starts here =================================
 const manipulateDOM = {
-  createPageStructure: () => {
-    header.classList.add('header')
-    sidebar.classList.add('sidebar')
-    content.classList.add('content')
-    document.body.appendChild(header)
-    document.body.appendChild(sidebar)
-    document.body.appendChild(content)
+  initialize: () => {
+    createPageStructure()
   },
   displayCurrentCategory: (currentCategory) => {
     const categoryHeader = document.createElement('h2')
     categoryHeader.textContent = currentCategory
     content.prepend(categoryHeader)
-  },
-  displayTask: (newTask, newDueDate) => {
-    const taskContainer = document.createElement('div')
-    const checkButton = document.createElement('input')
-    const task = document.createElement('p')
-    const dueDateDiv = document.createElement('div')
-    const dateIcon = document.createElement('svg')
-    const dueDate = document.createElement('p')
-
-    taskContainer.classList.add('task-container')
-    task.classList.add('task')
-    dueDateDiv.classList.add('due-date-container')
-    checkButton.setAttribute('type', 'checkbox')
-    dateIcon.classList.add('date-icon')
-    dueDate.classList.add('due-date')
-
-    task.textContent = newTask
-    dueDate.textContent = newDueDate
-    dateIcon.innerHTML = calendarIcon
-
-    content.appendChild(taskContainer)
-    taskContainer.appendChild(checkButton)
-    taskContainer.appendChild(task)
-    taskContainer.appendChild(dueDateDiv)
-    dueDateDiv.appendChild(dateIcon)
-    dueDateDiv.appendChild(dueDate)
   },
   expandTask: () => {},
 }
