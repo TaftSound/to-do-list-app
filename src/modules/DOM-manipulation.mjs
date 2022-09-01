@@ -14,6 +14,35 @@ const manipulateDOM = {
     document.body.appendChild(sidebar)
     document.body.appendChild(content)
   },
+  displayNewTaskForm: () => {
+    const formContainer = document.createElement('div')
+    const form = document.createElement('form')
+    const dateLabel = document.createElement('label')
+    const dateInput = document.createElement('input')
+    const taskLabel = document.createElement('label')
+    const taskInput = document.createElement('input')
+    const notesLabel = document.createElement('label')
+    const notesInput = document.createElement('textarea')
+    const submitButton = document.createElement('button')
+    
+    formContainer.classList.add('new-task-form')
+    dateLabel.textContent = 'Due:'
+    dateInput.type = 'date'
+    taskLabel.textContent = 'Task:'
+    taskInput.type = 'text'
+    notesLabel.textContent = 'Notes:'
+    submitButton.textContent = 'Submit'
+    
+    content.appendChild(formContainer)
+    formContainer.appendChild(form)
+    form.appendChild(dateLabel)
+    form.appendChild(dateInput)
+    form.appendChild(taskLabel)
+    form.appendChild(taskInput)
+    form.appendChild(notesLabel)
+    form.appendChild(notesInput)
+    form.appendChild(submitButton)
+  },
   displayNewTaskButton: () => {
     const newTaskButton = document.createElement('button')
     const newTaskIcon = document.createElement('svg')
