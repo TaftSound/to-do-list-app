@@ -58,6 +58,14 @@ const createNewTaskForm = () => {
   return newFragment
 }
 
+const createBackgroundOverlay = () => {
+  const newFragment = new DocumentFragment()
+  const newOverlay = document.createElement('div')
+  newOverlay.classList.add('overlay')
+  newFragment.appendChild(newOverlay)
+  return newFragment
+}
+
 const createNewTaskButton = () => {
   const newFragment = new DocumentFragment()
   const newTaskButton = document.createElement('button')
@@ -113,12 +121,16 @@ const displayTask = (newTask, newDueDate, newNotes) => {
   content.appendChild(task)
 }
 const displayNewTaskForm = () => {
+  const backgroundOverlay = createBackgroundOverlay()
   const newTaskForm = createNewTaskForm()
+  content.appendChild(backgroundOverlay)
   content.appendChild(newTaskForm)
 }
 const removeNewTaskForm = () => {
+  const overlay = document.getElementsByClassName('overlay')
   const form = document.getElementsByClassName('new-task-form')
   form[0].remove()
+  overlay[0].remove()
 }
 const displayNewTaskButton = () => {
   const newTaskButton = createNewTaskButton()
@@ -128,35 +140,36 @@ const removeNewTaskButton = () => {
   const newTaskButton = document.getElementsByClassName('new-task-button')
   newTaskButton[0].remove()
 }
-
-// Render display from data ===================================
+const displayCategory = (currentCategory) => {
+  const categoryHeader = document.createElement('h2')
+  categoryHeader.textContent = currentCategory
+  content.prepend(categoryHeader)
+}
 
 // Add listeners and subscribers ==============================
-PubSub.subscribe('display new task bttn', () => {
+PubSub.subscribe('tasks displayed', () => {
   displayNewTaskButton()
 })
 PubSub.subscribe('open task form', () => {
   removeNewTaskButton()
   displayNewTaskForm()
 })
+PubSub.subscribe('display task', (msg, data) => {
+  displayTask(...data)
+})
 PubSub.subscribe('create new task', (msg, data) => {
   removeNewTaskForm()
   displayTask(...data)
   displayNewTaskButton()
 })
-PubSub.subscribe('create task', (msg, data) => {
-  displayTask(...data)
+PubSub.subscribe('display category', (msg, category) => {
+  displayCategory(category)
 })
 
 // Module to be exported starts here =================================
 const manipulateDOM = {
   initialize: () => {
     createPageStructure()
-  },
-  displayCurrentCategory: (currentCategory) => {
-    const categoryHeader = document.createElement('h2')
-    categoryHeader.textContent = currentCategory
-    content.prepend(categoryHeader)
   },
   expandTask: () => {},
 }
