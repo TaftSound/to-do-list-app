@@ -57,16 +57,40 @@ p {
   margin: 0px;
 }
 input[type='checkbox'] {
+  position: relative;
   margin: 0px;
+  -webkit-appearance: none;
   appearance: none;
   border: solid 2px var(--medium-grey);
   border-radius: 50%;
   height: 20px;
   width: 20px;
+  display: grid;
+  place-content: center;
+}
+input[type='checkbox']::before {
+  content: '';
+  box-shadow: inset 20px 20px rgb(0, 0, 0, 0);
+  border-radius: 50%;
+  height: 5px;
+  width: 5px;
+  transition: 0.3s;
+}
+input[type='checkbox']::after {
+  position: absolute;
+  content: '';
+  box-shadow: 0px 0px 0px 1.5px rgb(0, 0, 0, 0.0);
+  border-radius: 50%;
+  height: 22px;
+  width: 22px;
+  transition: 0.15s;
+  top: -3px;
+  left: -3px;
 }
 
 /* Task mini display ==================================== */
 .task-container {
+  position: relative;
   display: grid;
   grid-template-columns: min-content 1fr;
   grid-template-rows: min-content min-content;
@@ -74,7 +98,7 @@ input[type='checkbox'] {
   row-gap: 5px;
   font-size: 17px;
   align-items: center;
-  padding: 10px 15px;
+  padding: 5px 15px 15px 15px;
   background-color: var(--light-grey);
   border: solid 2px transparent;
   border-radius: 10px;
@@ -84,6 +108,15 @@ input[type='checkbox'] {
   transform: translateY(-2px);
   background-color: var(--extra-light-grey);
   box-shadow: 0px 2px 5px rgb(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+.task-container:hover input[type='checkbox']::before {
+  box-shadow: inset 20px 20px rgb(0, 0, 0, .25);
+  height: 12px;
+  width: 12px;
+}
+.task-container:hover input[type='checkbox']::after {
+  box-shadow: 0px 0px 0px 1.5px rgb(0, 0, 0, 0.08);
 }
 .due-date-container {
   grid-column: 2/3;
@@ -108,7 +141,39 @@ input[type='checkbox'] {
   -o-user-select: none;
   user-select: none;
 }
+.expand-button {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  left: -2px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 15%;
+  padding: 0% 30%;
+  transition: .25s;
+}
+.expand-button:hover {
+  opacity: 35%;
+  padding: 0% 29.5%;
+}
+.expand-button:hover ~ input[type='checkbox']::before {
+  box-shadow: inset 20px 20px rgb(0, 0, 0, 0);
+  height: 5px;
+  width: 5px;
+}
+.expand-button:hover ~ input[type='checkbox']::after {
+  box-shadow: 0px 0px 0px 1.5px rgb(0, 0, 0, 0.0);
+}
+.expand-symbol {
+  height: 3px;
+  width: 100%;
+  background-color: rgb(0, 0, 0);
+  border-radius: 10px;
+}
 /* Task enlarged display ================================ */
+
 
 /* New task button display ============================== */
 .new-task-button {

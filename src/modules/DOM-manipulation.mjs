@@ -93,6 +93,8 @@ const createNewTask = (newTask, newDueDate, newNotes) => {
   const dueDateDiv = document.createElement('div')
   const dateIcon = document.createElement('svg')
   const dueDate = document.createElement('p')
+  const expandButton = document.createElement('div')
+  const expandSymbol = document.createElement('div')
 
   taskContainer.classList.add('task-container')
   task.classList.add('task')
@@ -100,12 +102,16 @@ const createNewTask = (newTask, newDueDate, newNotes) => {
   checkButton.setAttribute('type', 'checkbox')
   dateIcon.classList.add('date-icon')
   dueDate.classList.add('due-date')
+  expandButton.classList.add('expand-button')
+  expandSymbol.classList.add('expand-symbol')
 
   task.textContent = newTask
   dueDate.textContent = newDueDate
   dateIcon.innerHTML = calendarIcon
 
   newFragment.appendChild(taskContainer)
+  taskContainer.appendChild(expandButton)
+  expandButton.appendChild(expandSymbol)
   taskContainer.appendChild(checkButton)
   taskContainer.appendChild(task)
   taskContainer.appendChild(dueDateDiv)
