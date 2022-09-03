@@ -93,28 +93,33 @@ const createNewTask = (newTask, newDueDate, newNotes) => {
   const dueDateDiv = document.createElement('div')
   const dateIcon = document.createElement('svg')
   const dueDate = document.createElement('p')
-  const expandButton = document.createElement('div')
-  const expandSymbol = document.createElement('div')
+  const expandButton = document.createElement('input')
+  const notesContainer = document.createElement('div')
+  const notes = document.createElement('p')
 
   taskContainer.classList.add('task-container')
   task.classList.add('task')
   dueDateDiv.classList.add('due-date-container')
   checkButton.setAttribute('type', 'checkbox')
+  checkButton.classList.add('task-checkbox')
+  expandButton.setAttribute('type', 'checkbox')
+  expandButton.classList.add('expand-button')
   dateIcon.classList.add('date-icon')
   dueDate.classList.add('due-date')
-  expandButton.classList.add('expand-button')
-  expandSymbol.classList.add('expand-symbol')
+  notesContainer.classList.add('notes-container')
 
   task.textContent = newTask
   dueDate.textContent = newDueDate
   dateIcon.innerHTML = calendarIcon
+  notes.textContent = newNotes
 
   newFragment.appendChild(taskContainer)
   taskContainer.appendChild(expandButton)
-  expandButton.appendChild(expandSymbol)
   taskContainer.appendChild(checkButton)
   taskContainer.appendChild(task)
   taskContainer.appendChild(dueDateDiv)
+  taskContainer.appendChild(notesContainer)
+  notesContainer.appendChild(notes)
   dueDateDiv.appendChild(dateIcon)
   dueDateDiv.appendChild(dueDate)
 
@@ -151,6 +156,7 @@ const displayCategory = (currentCategory) => {
   categoryHeader.textContent = currentCategory
   content.prepend(categoryHeader)
 }
+// Modify existing DOM elements ===============================
 
 // Add listeners and subscribers ==============================
 PubSub.subscribe('tasks displayed', () => {
