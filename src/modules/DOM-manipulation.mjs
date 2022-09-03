@@ -85,7 +85,7 @@ const createNewTaskButton = () => {
   return newFragment
 }
 
-const createNewTask = (newTask, newDueDate, newNotes) => {
+const createNewTask = (newTask, newDueDate, newNotes, id) => {
   const newFragment = new DocumentFragment()
   const taskContainer = document.createElement('div')
   const checkButton = document.createElement('input')
@@ -96,6 +96,7 @@ const createNewTask = (newTask, newDueDate, newNotes) => {
   const expandButton = document.createElement('input')
   const notesContainer = document.createElement('div')
   const notes = document.createElement('p')
+  const deleteButton = document.createElement('button')
 
   taskContainer.classList.add('task-container')
   task.classList.add('task')
@@ -104,6 +105,7 @@ const createNewTask = (newTask, newDueDate, newNotes) => {
   checkButton.classList.add('task-checkbox')
   expandButton.setAttribute('type', 'checkbox')
   expandButton.classList.add('expand-button')
+  deleteButton.classList.add('delete-button')
   dateIcon.classList.add('date-icon')
   dueDate.classList.add('due-date')
   notesContainer.classList.add('notes-container')
@@ -115,6 +117,7 @@ const createNewTask = (newTask, newDueDate, newNotes) => {
 
   newFragment.appendChild(taskContainer)
   taskContainer.appendChild(expandButton)
+  taskContainer.appendChild(deleteButton)
   taskContainer.appendChild(checkButton)
   taskContainer.appendChild(task)
   taskContainer.appendChild(dueDateDiv)
@@ -122,6 +125,10 @@ const createNewTask = (newTask, newDueDate, newNotes) => {
   notesContainer.appendChild(notes)
   dueDateDiv.appendChild(dateIcon)
   dueDateDiv.appendChild(dueDate)
+
+  deleteButton.addEventListener('click', (id)=> {
+    PubSub.publish('delete task', id)
+  })
 
   return newFragment
 }

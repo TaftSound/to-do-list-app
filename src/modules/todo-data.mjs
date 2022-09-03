@@ -6,7 +6,8 @@ const taskArray = []
 const currentCategory = 'Work'
 
 const addTask = (task, dueDate, notes) => {
-  const newTask = [task, dueDate, notes]
+  const id = taskArray.length
+  const newTask = [task, dueDate, notes, id]
   taskArray.push(newTask)
 }
 
