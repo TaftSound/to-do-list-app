@@ -96,7 +96,10 @@ const createNewTask = (newTask, newDueDate, newNotes, id) => {
   const expandButton = document.createElement('input')
   const notesContainer = document.createElement('div')
   const notes = document.createElement('p')
+  const menuButton = document.createElement('div')
+  const menu = document.createElement('div')
   const deleteButton = document.createElement('button')
+  // const editButton = document.createElement('button')
 
   taskContainer.classList.add('task-container')
   task.classList.add('task')
@@ -105,7 +108,8 @@ const createNewTask = (newTask, newDueDate, newNotes, id) => {
   checkButton.classList.add('task-checkbox')
   expandButton.setAttribute('type', 'checkbox')
   expandButton.classList.add('expand-button')
-  deleteButton.classList.add('delete-button')
+  menuButton.classList.add('task-menu-button')
+  menu.classList.add('task-menu')
   dateIcon.classList.add('date-icon')
   dueDate.classList.add('due-date')
   notesContainer.classList.add('notes-container')
@@ -114,10 +118,15 @@ const createNewTask = (newTask, newDueDate, newNotes, id) => {
   dueDate.textContent = newDueDate
   dateIcon.innerHTML = calendarIcon
   notes.textContent = newNotes
+  // editButton.textContent = 'Edit'
+  deleteButton.textContent = 'Delete'
 
   newFragment.appendChild(taskContainer)
   taskContainer.appendChild(expandButton)
-  taskContainer.appendChild(deleteButton)
+  taskContainer.appendChild(menuButton)
+  menuButton.appendChild(menu)
+  // menu.appendChild(editButton)
+  menu.appendChild(deleteButton)
   taskContainer.appendChild(checkButton)
   taskContainer.appendChild(task)
   taskContainer.appendChild(dueDateDiv)
@@ -125,10 +134,6 @@ const createNewTask = (newTask, newDueDate, newNotes, id) => {
   notesContainer.appendChild(notes)
   dueDateDiv.appendChild(dateIcon)
   dueDateDiv.appendChild(dueDate)
-
-  deleteButton.addEventListener('click', (id)=> {
-    PubSub.publish('delete task', id)
-  })
 
   return newFragment
 }

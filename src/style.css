@@ -136,7 +136,7 @@ p {
   font-size: 13px;
   color: var(--accent-color);
 }
-.task-container p {
+.task-container {
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -172,17 +172,17 @@ p {
   cursor: pointer;
 }
 .expand-button:hover ~ .task-checkbox,
-.delete-button:hover ~ .task-checkbox {
+.task-menu-button:hover ~ .task-checkbox {
   border: solid 2px rgb(0, 0, 0, 0.25);
 }
 .expand-button:hover ~ .task-checkbox::before,
-.delete-button:hover ~ .task-checkbox::before {
+.task-menu-button:hover ~ .task-checkbox::before {
   box-shadow: inset 20px 20px rgb(0, 0, 0, 0);
   height: 5px;
   width: 5px;
 }
 .expand-button:hover ~ .task-checkbox::after,
-.delete-button:hover ~ .task-checkbox::after {
+.task-menu-button:hover ~ .task-checkbox::after {
   box-shadow: 0px 0px 0px 1.5px rgb(0, 0, 0, 0);
 }
 .notes-container {
@@ -215,27 +215,82 @@ p {
     width .15s ease-in-out,
     margin .15s ease-in-out;
 }
-.delete-button {
+.task-menu-button {
   position: relative;
   grid-row: 1;
   grid-column: -2 / -1;
-  height: 12px;
+  height: 8px;
   border-radius: 10px;
   align-self: flex-start;
   display: grid;
   place-content: center;
   border: solid 2px rgb(0, 0, 0, 0.15);
+  transition: border-color .1s;
 }
-.delete-button:hover {
-  cursor: pointer;
-  border-color: rgb(0, 0, 0, 0.25);
-}
-.delete-button:hover::before {
+.task-menu-button::before {
   content: '';
   height: 3px;
   width: 15px;
   border-radius: 10px;
+  background-color: transparent;
+  transition: background-color .2s;
+}
+.task-menu-button:hover {
+  cursor: pointer;
+  border-color: rgb(0, 0, 0, 0.25);
+  transition: border-color .2s;
+}
+.task-menu-button:hover::before {
   background-color: var(--medium-grey);
+  transition: background-color .5s;
+}
+.task-menu {
+  position: absolute;
+  top: 10px;
+  right: -2px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  visibility: hidden;
+  transition: visibility 0.0s ease-in-out .5s;
+}
+.task-menu-button button {
+  background-color: transparent;
+  border: solid 2px rgb(0, 0, 0, 0);
+  border-radius: 5px;
+  margin-top: 3px;
+  font-size: 13px;
+  font-family: var(--main-font);
+  font-weight: 500;
+  color: rgb(0, 0, 0, 0);
+  transition: 
+    font-size .15s ease-in-out,
+    border .15s ease-in-out,
+    color .15s ease-in-out;
+}
+.task-menu-button:hover .task-menu {
+  visibility: visible;
+  transition: visibility 0.0s linear 0.0s;
+}
+.task-menu-button:hover button {
+  border: solid 2px rgb(0, 0, 0, 0.1);
+  color: var(--medium-grey);
+  transition: 
+    box-shadow .15s ease-in-out,
+    border .15s ease-in-out,
+    color .25s ease-in-out,
+    font-size .15s ease-in-out;
+}
+.task-menu-button:hover button:hover {
+  cursor: pointer;
+  border-color: rgb(0, 0, 0, 0.35);
+  box-shadow: 3px 3px 5px rgb(0, 0, 0, 0.25);
+  /* color: var(--medium-grey); */
+  font-size: 13.5px;
+  transition: 
+    box-shadow .25s ease-in-out,
+    border-color .2s ease-in-out,
+    font-size .15s ease-in-out;
 }
 
 /* New task button display ============================== */
