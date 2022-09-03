@@ -136,6 +136,10 @@ const createNewTask = (newTask, newDueDate, newNotes, key) => {
   dueDateDiv.appendChild(dateIcon)
   dueDateDiv.appendChild(dueDate)
 
+  deleteButton.addEventListener('click', () => {
+    PubSub.publish('delete task', key)
+  })
+
   return newFragment
 }
 

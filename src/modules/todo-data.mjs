@@ -11,18 +11,22 @@ const addTask = (task, dueDate, notes) => {
   taskMap.set(currentKey, newTask)
   currentKey++
 }
-// const deleteTask = (id) => {
-
-// }
+const deleteTask = (key) => {
+  taskMap.delete(key)
+}
 
 addTask('Do some works', '09/01/2022', 'notes about all kind stuff you know what I mean bro')
 addTask('Do some other works', '09/02/2022', 'notes')
 
 PubSub.subscribe('send task data', (msg, data) => {
   addTask(...data)
-  PubSub.publish('new task stored')
-  console.log('data added')
+  PubSub.publish('clear and render')
 })
+PubSub.subscribe('delete task', (msg, key) => {
+  deleteTask(key)
+  PubSub.publish('clear and render')
+  console.log('data deleted')
+}) 
 
 const taskData = {
   addCategory: (name) => {

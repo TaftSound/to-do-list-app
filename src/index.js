@@ -23,7 +23,7 @@ manipulateDOM.initialize()
 coordinator.loadCurrentCategory()
 coordinator.renderTasks()
 
-PubSub.subscribe('new task stored', () => {
+PubSub.subscribe('clear and render', () => {
   manipulateDOM.clearContent()
   coordinator.renderTasks()
   coordinator.loadCurrentCategory()
