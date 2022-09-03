@@ -71,7 +71,7 @@ p {
   background-color: var(--light-grey);
   border: solid 2px transparent;
   border-radius: 10px;
-  transition: .1s;
+  transition: 0.1s;
 }
 .task-container:hover {
   transform: translateY(-2px);
@@ -83,7 +83,7 @@ p {
   margin: 0px;
   -webkit-appearance: none;
   appearance: none;
-  border: solid 2px rgb(0, 0, 0, .25);
+  border: solid 2px rgb(0, 0, 0, 0.25);
   background-color: var(--extra-light-grey);
   border-radius: 50%;
   height: 20px;
@@ -102,7 +102,7 @@ p {
 .task-checkbox::after {
   position: absolute;
   content: '';
-  box-shadow: 0px 0px 0px 1.5px rgb(0, 0, 0, 0.0);
+  box-shadow: 0px 0px 0px 1.5px rgb(0, 0, 0, 0);
   border-radius: 50%;
   height: 22px;
   width: 22px;
@@ -110,14 +110,11 @@ p {
   top: -3px;
   left: -3px;
 }
-.task-container:hover .delete-button {
-
-}
 .task-container:hover .task-checkbox {
   border: solid 2px var(--medium-grey);
 }
 .task-container:hover .task-checkbox::before {
-  box-shadow: inset 20px 20px rgb(0, 0, 0, .25);
+  box-shadow: inset 20px 20px rgb(0, 0, 0, 0.25);
   height: 12px;
   width: 12px;
 }
@@ -160,7 +157,7 @@ p {
   opacity: 10%;
   padding: 0% 30%;
   margin-bottom: -10px;
-  transition: .25s;
+  transition: 0.25s;
 }
 .expand-button::before {
   content: '';
@@ -171,12 +168,12 @@ p {
 }
 .expand-button:hover {
   opacity: 35%;
-  padding: 0% 29.5%;
+  padding: 0% calc(30% + 10px);
   cursor: pointer;
 }
 .expand-button:hover ~ .task-checkbox,
 .delete-button:hover ~ .task-checkbox {
-  border: solid 2px rgb(0, 0, 0, .25);
+  border: solid 2px rgb(0, 0, 0, 0.25);
 }
 .expand-button:hover ~ .task-checkbox::before,
 .delete-button:hover ~ .task-checkbox::before {
@@ -186,18 +183,23 @@ p {
 }
 .expand-button:hover ~ .task-checkbox::after,
 .delete-button:hover ~ .task-checkbox::after {
-  box-shadow: 0px 0px 0px 1.5px rgb(0, 0, 0, 0.0);
+  box-shadow: 0px 0px 0px 1.5px rgb(0, 0, 0, 0);
 }
 .notes-container {
   box-sizing: border-box;
   grid-column: 2;
   border-radius: 5px;
   border: solid 0px rgb(0, 0, 0, 0);
-  color: transparent;
-  transition: .3s;
+  transition: 0.3s;
   font-size: 0px;
   font-weight: 300;
   width: 0px;
+  color: transparent;
+  transition: 
+    color 0.15s ease-in-out,
+    font-size 0.2s ease-in-out 0.15s,
+    width .2s ease-in-out 0.15s,
+    margin .2s ease-in-out 0.15s;
 }
 .expand-button:checked {
   padding: 0% 25%;
@@ -205,8 +207,13 @@ p {
 .expand-button:checked ~ .notes-container {
   font-size: 17px;
   width: 100%;
-  color: var(--medium-grey);
   margin: 12.5px 0px 5px 0px;
+  color: var(--medium-grey);
+  transition: 
+    color 0.15s ease-in-out 0.15s,
+    font-size 0.15s ease-in-out,
+    width .15s ease-in-out,
+    margin .15s ease-in-out;
 }
 .delete-button {
   position: relative;
@@ -217,11 +224,11 @@ p {
   align-self: flex-start;
   display: grid;
   place-content: center;
-  border: solid 2px rgb(0, 0, 0, .15);
+  border: solid 2px rgb(0, 0, 0, 0.15);
 }
 .delete-button:hover {
   cursor: pointer;
-  border-color: rgb(0, 0, 0, .25);
+  border-color: rgb(0, 0, 0, 0.25);
 }
 .delete-button:hover::before {
   content: '';
@@ -243,7 +250,7 @@ p {
   display: flex;
   justify-content: center;
   fill: var(--light-grey);
-  transition: .1s;
+  transition: 0.1s;
 }
 .new-task-button:hover {
   border-color: var(--extra-light-grey);
@@ -319,14 +326,13 @@ p {
   font-weight: 900;
   font-family: var(--main-font);
   color: var(--dark-grey);
-  transition: .1s;
+  transition: 0.1s;
   box-shadow: 2px 2px 8px rgb(0, 0, 0, 0.2);
 }
 .new-task-form button:hover {
   box-shadow: 4px 4px 10px rgb(0, 0, 0, 0.3);
-  transform:translateY(-1px);
+  transform: translateY(-1px);
   border-color: var(--accent-color);
-
 }
 .new-task-form input:focus,
 .new-task-form textarea:focus {
