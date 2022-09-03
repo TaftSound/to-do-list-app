@@ -252,7 +252,7 @@ p {
   flex-direction: column;
   gap: 4px;
   visibility: hidden;
-  transition: visibility 0.0s ease-in-out .5s;
+  transition: visibility 0.0s ease-in-out .25s;
 }
 .task-menu-button button {
   background-color: transparent;
@@ -284,13 +284,18 @@ p {
 .task-menu-button:hover button:hover {
   cursor: pointer;
   border-color: rgb(0, 0, 0, 0.35);
-  box-shadow: 3px 3px 5px rgb(0, 0, 0, 0.25);
+  box-shadow: 1.5px 1.5px 5px rgb(0, 0, 0, 0.25);
   /* color: var(--medium-grey); */
   font-size: 13.5px;
   transition: 
-    box-shadow .25s ease-in-out,
+    box-shadow .1s ease-in-out,
     border-color .2s ease-in-out,
     font-size .15s ease-in-out;
+}
+.task-menu-button:hover button:hover:active {
+  box-shadow: 1px 1px 2px rgb(0, 0, 0, 0.25);
+  background-color: var(--light-grey);
+  transition: box-shadow 0.0s ease-in-out 0.0s;
 }
 
 /* New task button display ============================== */
