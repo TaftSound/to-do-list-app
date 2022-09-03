@@ -10,7 +10,7 @@ const addTask = (task, dueDate, notes) => {
   taskArray.push(newTask)
 }
 
-addTask('Do some works', '09/01/2022', 'notes')
+addTask('Do some works', '09/01/2022', 'notes about all kind stuff you know what I mean bro')
 addTask('Do some other works', '09/02/2022', 'notes')
 
 PubSub.subscribe('create new task', (msg, data) => {

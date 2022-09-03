@@ -62,12 +62,12 @@ p {
   position: relative;
   display: grid;
   grid-template-columns: 20px 1fr 20px;
-  grid-template-rows: min-content min-content;
+  grid-template-rows: min-content min-content 5px;
   column-gap: 10px;
-  row-gap: 5px;
+  row-gap: 3px;
   font-size: 17px;
   align-items: center;
-  padding: 5px 15px 7.5px 15px;
+  padding: 5px 10px 7.5px 15px;
   background-color: var(--light-grey);
   border: solid 2px transparent;
   border-radius: 10px;
@@ -153,7 +153,7 @@ p {
   align-items: center;
   opacity: 10%;
   padding: 0% 30%;
-  margin-bottom: -15px;
+  margin-bottom: -10px;
   transition: .25s;
 }
 .expand-button::before {
@@ -184,14 +184,16 @@ p {
   transition: .3s;
   font-size: 0px;
   font-weight: 300;
+  width: 0px;
 }
 .expand-button:checked {
   padding: 0% 25%;
 }
 .expand-button:checked ~ .notes-container {
   font-size: 17px;
+  width: 100%;
   color: var(--medium-grey);
-  margin: 10px 0px;
+  margin: 12.5px 0px 5px 0px;
 }
 
 /* New task button display ============================== */
