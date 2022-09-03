@@ -2,14 +2,13 @@ import './style.css'
 import PubSub from 'pubsub-js'
 import manipulateDOM from './modules/DOM-manipulation.mjs'
 import taskData from './modules/todo-data.mjs'
-// import dataRetriever from './modules/retrieve-form-data.mjs'
 
 const coordinator = (() => {
   return {
-    loadCurrentTasks: () => {
-      const currentTasks = taskData.getTaskArray()
-      for (const task in currentTasks) {
-        PubSub.publish('display task', currentTasks[task])
+    renderTasks: () => {
+      const currentTasks = taskData.getTaskMap()
+      for (const task of currentTasks.values()) {
+        PubSub.publish('display task', task)
       }
       PubSub.publish('tasks displayed')
     },
@@ -20,10 +19,12 @@ const coordinator = (() => {
   }
 })()
 
-addEventListener('DOMContentLoaded', () => {
-  coordinator.loadCurrentCategory()
-  coordinator.loadCurrentTasks()
-})
 manipulateDOM.initialize()
-// taskData.addCategory('Work')
-// manipulateDOM.displayCurrentCategory('Work Stuff')
+coordinator.loadCurrentCategory()
+coordinator.renderTasks()
+
+PubSub.subscribe('new task stored', () => {
+  manipulateDOM.clearContent()
+  coordinator.renderTasks()
+  coordinator.loadCurrentCategory()
+})

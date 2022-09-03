@@ -2,20 +2,26 @@
 import PubSub from 'pubsub-js'
 
 const categoryArray = []
-const taskArray = []
 const currentCategory = 'Work'
+const taskMap = new Map()
+let currentKey = 0
 
 const addTask = (task, dueDate, notes) => {
-  const id = taskArray.length
-  const newTask = [task, dueDate, notes, id]
-  taskArray.push(newTask)
+  const newTask = [task, dueDate, notes, currentKey]
+  taskMap.set(currentKey, newTask)
+  currentKey++
 }
+// const deleteTask = (id) => {
+
+// }
 
 addTask('Do some works', '09/01/2022', 'notes about all kind stuff you know what I mean bro')
 addTask('Do some other works', '09/02/2022', 'notes')
 
-PubSub.subscribe('create new task', (msg, data) => {
+PubSub.subscribe('send task data', (msg, data) => {
   addTask(...data)
+  PubSub.publish('new task stored')
+  console.log('data added')
 })
 
 const taskData = {
@@ -24,8 +30,8 @@ const taskData = {
     const newCategory = { name, tasks }
     categoryArray.push(newCategory)
   },
-  getTaskArray: () => {
-    return taskArray
+  getTaskMap: () => {
+    return taskMap
   },
   getCurrentCategory: () => {
     return currentCategory
@@ -33,6 +39,5 @@ const taskData = {
 }
 
 // need a way to link tasks to their category
-// need a way to get task objects out of module to render them
 
 export default taskData

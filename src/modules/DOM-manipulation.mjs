@@ -48,11 +48,12 @@ const createNewTaskForm = () => {
   form.appendChild(submitButton)
 
   submitButton.addEventListener('click', () => {
-    PubSub.publish('create new task', [
+    PubSub.publish('send task data', [
       taskInput.value,
       dateInput.value,
       notesInput.value,
     ])
+    PubSub.publish('form submitted')
   })
 
   return newFragment
@@ -85,7 +86,7 @@ const createNewTaskButton = () => {
   return newFragment
 }
 
-const createNewTask = (newTask, newDueDate, newNotes, id) => {
+const createNewTask = (newTask, newDueDate, newNotes, key) => {
   const newFragment = new DocumentFragment()
   const taskContainer = document.createElement('div')
   const checkButton = document.createElement('input')
@@ -139,8 +140,8 @@ const createNewTask = (newTask, newDueDate, newNotes, id) => {
 }
 
 // Display and remove elements =================================
-const displayTask = (newTask, newDueDate, newNotes) => {
-  const task = createNewTask(newTask, newDueDate, newNotes)
+const displayTask = (newTask, newDueDate, newNotes, key) => {
+  const task = createNewTask(newTask, newDueDate, newNotes, key)
   content.appendChild(task)
 }
 const displayNewTaskForm = () => {
@@ -171,19 +172,18 @@ const displayCategory = (currentCategory) => {
 // Modify existing DOM elements ===============================
 
 // Add listeners and subscribers ==============================
-PubSub.subscribe('tasks displayed', () => {
-  displayNewTaskButton()
-})
 PubSub.subscribe('open task form', () => {
   removeNewTaskButton()
   displayNewTaskForm()
 })
+PubSub.subscribe('form submitted', (msg, data) => {
+  removeNewTaskForm()
+  displayNewTaskButton()
+})
 PubSub.subscribe('display task', (msg, data) => {
   displayTask(...data)
 })
-PubSub.subscribe('create new task', (msg, data) => {
-  removeNewTaskForm()
-  displayTask(...data)
+PubSub.subscribe('tasks displayed', () => {
   displayNewTaskButton()
 })
 PubSub.subscribe('display category', (msg, category) => {
@@ -194,6 +194,12 @@ PubSub.subscribe('display category', (msg, category) => {
 const manipulateDOM = {
   initialize: () => {
     createPageStructure()
+  },
+  clearContent: () => {
+    const currentContent = document.getElementsByClassName('content')[0]
+    while (currentContent.firstChild) {
+      currentContent.firstChild.remove()
+    }
   },
   expandTask: () => {},
 }
