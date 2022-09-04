@@ -6,7 +6,7 @@ const currentCategory = 'Work'
 const taskMap = new Map()
 let currentKey = 0
 
-const addTask = (task, dueDate, notes) => {
+const addTask = (task, dueDate, notes, oldkey) => {
   const newTask = [task, dueDate, notes, currentKey]
   taskMap.set(currentKey, newTask)
   currentKey++
@@ -15,17 +15,30 @@ const deleteTask = (key) => {
   taskMap.delete(key)
 }
 
-addTask('Do some works', '09/01/2022', 'notes about all kind stuff you know what I mean bro')
-addTask('Do some other works', '09/02/2022', 'notes')
+const updateLocalStorage = () => {
+  if (!taskMap.size) { localStorage.clear() }
+  const storageArray = Array.from(taskMap.values())
+  localStorage.setItem('task array', JSON.stringify(storageArray))
+}
+const loadFromStorage = () => {
+  if (!localStorage.length) { return }
+  const returnedArray = JSON.parse(localStorage.getItem('task array'))
+  for (const task of returnedArray) {
+    addTask(...task)
+  }
+}
+
+loadFromStorage()
 
 PubSub.subscribe('send task data', (msg, data) => {
   addTask(...data)
+  updateLocalStorage()
   PubSub.publish('clear and render')
 })
 PubSub.subscribe('delete task', (msg, key) => {
   deleteTask(key)
+  updateLocalStorage()
   PubSub.publish('clear and render')
-  console.log('data deleted')
 }) 
 
 const taskData = {
