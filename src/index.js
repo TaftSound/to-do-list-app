@@ -8,9 +8,10 @@ const coordinator = (() => {
     renderTasks: () => {
       const currentTasks = taskData.getTaskMap()
       for (const task of currentTasks.values()) {
+        if (task === currentTasks.get('name')) { continue }
         PubSub.publish('display task', task)
       }
-      PubSub.publish('tasks displayed')
+      PubSub.publish('display new task button')
     },
     loadCurrentCategory: () => {
       const currentCategory = taskData.getCurrentCategory()

@@ -187,7 +187,7 @@ PubSub.subscribe('form submitted', (msg, data) => {
 PubSub.subscribe('display task', (msg, data) => {
   displayTask(...data)
 })
-PubSub.subscribe('tasks displayed', () => {
+PubSub.subscribe('display new task button', () => {
   displayNewTaskButton()
 })
 PubSub.subscribe('display category', (msg, category) => {
