@@ -140,6 +140,10 @@ const createNewCategory = (categoryName) => {
   newFragment.appendChild(categoryContainer)
   categoryContainer.appendChild(category)
 
+  categoryContainer.addEventListener('click', () => {
+    PubSub.publish('change category', categoryName)
+  })
+
   return newFragment
 }
 

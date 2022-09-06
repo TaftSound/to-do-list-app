@@ -68,6 +68,11 @@ PubSub.subscribe('delete task', (msg, key) => {
   updateLocalStorage()
   PubSub.publish('clear and render tasks')
 })
+PubSub.subscribe('change category', (msg, category) => {
+  setCurrentCategory(category)
+  updateLocalStorage()
+  PubSub.publish('clear and render categories')
+})
 
 const taskData = {
   getTaskMap: () => {
