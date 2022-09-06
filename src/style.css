@@ -28,13 +28,20 @@ body {
 .header {
   grid-column: 1/3;
   height: clamp(45px, 8vh, 70px);
-  background-color: var(--dark-grey);
+  background-color: var(--extra-dark-grey);
 }
 
 .sidebar {
   grid-column: 1/2;
   width: clamp(175px, 23vw, 250px);
   background-color: var(--light-grey);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sidebar h2 {
+  color: var(--dark-grey);
 }
 
 .content {
@@ -44,13 +51,14 @@ body {
   grid-auto-rows: min-content;
   padding: 15px 30px 15px 45px;
   gap: 15px;
-  background-color: var(--medium-grey);
+  background-color: var(--dark-grey);
   min-height: 450px;
 }
 h2 {
   margin: 10px 0px;
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 900;
+  /* letter-spacing: 3px; */
   color: var(--extra-light-grey);
 }
 p {
@@ -326,7 +334,8 @@ p {
   height: 40px;
 }
 /* New task form ======================================== */
-.new-task-form {
+.new-task-form,
+.new-category-form {
   position: absolute;
   left: 0;
   right: 0;
@@ -348,10 +357,10 @@ p {
   right: 0px;
   bottom: 0px;
   left: 0px;
-  background-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(50, 50, 50, 0.45);
   z-index: 2;
 }
-.new-task-form form {
+form {
   display: grid;
   grid-template-columns: 1fr;
   grid-auto-rows: min-content;
@@ -363,13 +372,15 @@ p {
   border-radius: 9px;
   background-color: var(--light-grey);
 }
-.new-task-form label {
+label {
   font-weight: 900;
   color: var(--dark-grey);
 }
 .new-task-form input,
+.new-category-form input,
 .new-task-form textarea,
-.new-task-form button {
+.new-task-form button,
+.new-category-form button {
   box-sizing: border-box;
   margin-bottom: 10px;
   border: solid 2px var(--light-grey);
@@ -378,7 +389,8 @@ p {
   color: var(--medium-grey);
   font-size: 17px;
 }
-.new-task-form button {
+.new-task-form button,
+.new-category-form button {
   margin-top: 15px;
   padding: 10px 15px;
   place-self: flex-end;
@@ -389,13 +401,19 @@ p {
   transition: 0.1s;
   box-shadow: 2px 2px 8px rgb(0, 0, 0, 0.2);
 }
-.new-task-form button:hover {
+.new-task-form button:hover,
+.new-category-form button:hover {
   box-shadow: 4px 4px 10px rgb(0, 0, 0, 0.3);
   transform: translateY(-1px);
   border-color: var(--accent-color);
 }
-.new-task-form input:focus,
-.new-task-form textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: var(--accent-color);
 }
+
+/* New category form ==================================== */
+/* .new-category-form {
+  
+} */

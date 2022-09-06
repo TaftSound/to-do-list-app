@@ -8,12 +8,15 @@ const content = document.createElement('div')
 
 // Create elements stored in Document Fragments ==================
 const createPageStructure = () => {
+  const categoryMenuHeader = document.createElement('h2')
   header.classList.add('header')
   sidebar.classList.add('sidebar')
   content.classList.add('content')
+  categoryMenuHeader.textContent = 'Categories'
   document.body.appendChild(header)
   document.body.appendChild(sidebar)
   document.body.appendChild(content)
+  sidebar.appendChild(categoryMenuHeader)
 }
 
 const createNewTaskForm = () => {
@@ -53,7 +56,7 @@ const createNewTaskForm = () => {
       dateInput.value,
       notesInput.value,
     ])
-    PubSub.publish('form submitted')
+    PubSub.publish('task form submitted')
   })
 
   return newFragment
@@ -82,6 +85,60 @@ const createNewTaskButton = () => {
   newTaskButton.addEventListener('click', () => {
     PubSub.publish('open task form')
   })
+
+  return newFragment
+}
+
+const createNewCategoryForm = () => {
+  const newFragment = new DocumentFragment()
+  const formContainer = document.createElement('div')
+  const form = document.createElement('form')
+  const categoryLabel = document.createElement('label')
+  const categoryInput = document.createElement('input')
+  const submitButton = document.createElement('button')
+
+  formContainer.classList.add('new-category-form')
+  categoryLabel.textContent = 'New Category:'
+  categoryInput.type = 'text'
+  submitButton.textContent = 'Submit'
+  submitButton.type = 'button'
+
+  newFragment.appendChild(formContainer)
+  formContainer.appendChild(form)
+  form.appendChild(categoryLabel)
+  form.appendChild(categoryInput)
+  form.appendChild(submitButton)
+
+  submitButton.addEventListener('click', () => {
+    PubSub.publish('send category data', categoryInput.value)
+    PubSub.publish('category form submitted')
+  })
+
+  return newFragment
+}
+
+const createNewCategoryButton = () => {
+  const newFragment = new DocumentFragment()
+  const newCategoryButton = document.createElement('button')
+  newCategoryButton.classList.add('new-category-button')
+  newCategoryButton.textContent = 'Add Category'
+  newFragment.appendChild(newCategoryButton)
+
+  newCategoryButton.addEventListener('click', () => {
+    PubSub.publish('open category form')
+  })
+
+  return newFragment
+}
+
+const createNewCategory = (categoryName) => {
+  const newFragment = new DocumentFragment()
+  const categoryContainer = document.createElement('div')
+  const category = document.createElement('h3')
+  categoryContainer.classList.add('category-button')
+  category.textContent = categoryName
+  newFragment.appendChild(categoryContainer)
+  categoryContainer.appendChild(category)
 
   return newFragment
 }
@@ -151,12 +208,24 @@ const displayTask = (newTask, newDueDate, newNotes, key) => {
 const displayNewTaskForm = () => {
   const backgroundOverlay = createBackgroundOverlay()
   const newTaskForm = createNewTaskForm()
-  content.appendChild(backgroundOverlay)
+  document.body.appendChild(backgroundOverlay)
   content.appendChild(newTaskForm)
 }
 const removeNewTaskForm = () => {
   const overlay = document.getElementsByClassName('overlay')
   const form = document.getElementsByClassName('new-task-form')
+  form[0].remove()
+  overlay[0].remove()
+}
+const displayNewCategoryForm = () => {
+  const backgroundOverlay = createBackgroundOverlay()
+  const newCategoryForm = createNewCategoryForm()
+  document.body.appendChild(backgroundOverlay)
+  content.appendChild(newCategoryForm)
+}
+const removeNewCategoryForm = () => {
+  const overlay = document.getElementsByClassName('overlay')
+  const form = document.getElementsByClassName('new-category-form')
   form[0].remove()
   overlay[0].remove()
 }
@@ -168,21 +237,42 @@ const removeNewTaskButton = () => {
   const newTaskButton = document.getElementsByClassName('new-task-button')
   newTaskButton[0].remove()
 }
-const displayCategory = (currentCategory) => {
+const displayCategory = (category) => {
+  const newCategory = createNewCategory(category)
+  sidebar.appendChild(newCategory)
+}
+const displayNewCategoryButton = () => {
+  const newCategoryButton = createNewCategoryButton()
+  sidebar.appendChild(newCategoryButton)
+}
+const removeNewCategoryButton = () => {
+  const newCategoryButton = document.getElementsByClassName(
+    'new-category-button'
+  )
+  newCategoryButton[0].remove()
+}
+const displayCurrentCategory = (currentCategory) => {
   const categoryHeader = document.createElement('h2')
   categoryHeader.textContent = currentCategory
   content.prepend(categoryHeader)
 }
-// Modify existing DOM elements ===============================
 
 // Add listeners and subscribers ==============================
 PubSub.subscribe('open task form', () => {
   removeNewTaskButton()
   displayNewTaskForm()
 })
-PubSub.subscribe('form submitted', (msg, data) => {
+PubSub.subscribe('task form submitted', (msg, data) => {
   removeNewTaskForm()
   displayNewTaskButton()
+})
+PubSub.subscribe('open category form', () => {
+  removeNewCategoryButton()
+  displayNewCategoryForm()
+})
+PubSub.subscribe('category form submitted', (msg, data) => {
+  removeNewCategoryForm()
+  displayNewCategoryButton()
 })
 PubSub.subscribe('display task', (msg, data) => {
   displayTask(...data)
@@ -192,6 +282,12 @@ PubSub.subscribe('display new task button', () => {
 })
 PubSub.subscribe('display category', (msg, category) => {
   displayCategory(category)
+})
+PubSub.subscribe('display new category button', () => {
+  displayNewCategoryButton()
+})
+PubSub.subscribe('display current category', (msg, category) => {
+  displayCurrentCategory(category)
 })
 
 // Module to be exported starts here =================================
@@ -204,6 +300,14 @@ const manipulateDOM = {
     while (currentContent.firstChild) {
       currentContent.firstChild.remove()
     }
+  },
+  clearCategories: () => {
+    while (sidebar.firstChild) {
+      sidebar.firstChild.remove()
+    }
+    const categoryMenuHeader = document.createElement('h2')
+    categoryMenuHeader.textContent = 'Categories'
+    sidebar.appendChild(categoryMenuHeader)
   },
   expandTask: () => {},
 }
