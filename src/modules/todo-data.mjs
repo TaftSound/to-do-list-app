@@ -3,26 +3,31 @@ import PubSub from 'pubsub-js'
 
 const categoryMap = new Map()
 let currentCategory
-let currentKey = 0
+let currentTaskKey = 0
+let categoryOrderNumber = 1
 
 
 const setCurrentCategory = (selectedCategory) => {
   currentCategory = selectedCategory
 }
 
-const createCategory = (categoryName) => {
+const createCategory = (categoryName, existingOrder) => {
   const newTaskMap = new Map()
   newTaskMap.set('name', categoryName)
+  if (existingOrder) { newTaskMap.set('order', existingOrder) }
+  else {
+    newTaskMap.set('order', categoryOrderNumber)
+    categoryOrderNumber++
+  }
   categoryMap.set(categoryName, newTaskMap)
   setCurrentCategory(categoryName)
 }
 
 const addTask = (task, dueDate, notes, oldKey) => {
-  console.log('task added')
-  const newTask = [task, dueDate, notes, currentKey]
+  const newTask = [task, dueDate, notes, currentTaskKey]
   const category = categoryMap.get(currentCategory)
-  category.set(currentKey, newTask)
-  currentKey++
+  category.set(currentTaskKey, newTask)
+  currentTaskKey++
 }
 const deleteTask = (key) => {
   const taskMap = categoryMap.get(currentCategory)
@@ -43,10 +48,9 @@ const loadFromStorage = () => {
   for (const key of keys) {
     if (key === 'category') { continue }
     const returnedTaskArray = JSON.parse(localStorage.getItem(key))
-    createCategory(key)
-    for (const task of returnedTaskArray) {
-      if (task === currentCategory) { continue }
-      addTask(...task)
+    createCategory(key, returnedTaskArray[1])
+    for (let i = 2; i < returnedTaskArray.length; i++) {
+      addTask(...returnedTaskArray[i])
     }
   }
   currentCategory = localStorage.getItem('category')
@@ -86,6 +90,7 @@ const taskData = {
     return categoryMap
   },
   initialize: () => {
+    // localStorage.clear()
     loadFromStorage()
   },
 }
