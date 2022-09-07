@@ -18,13 +18,17 @@ const coordinator = (() => {
     renderCategories: () => {
       const categoryMap = taskData.getCategories()
       for (const category of categoryMap.values()) {
+        if (category.get('name') === taskData.getCurrentCategory()) {
+          PubSub.publish('display current category', category.get('name'))
+          continue
+        }
         PubSub.publish('display category', category.get('name'))
       }
       PubSub.publish('display new category button')
     },
-    renderCurrentCategory: () => {
+    renderCategoryHeader: () => {
       const currentCategory = taskData.getCurrentCategory()
-      PubSub.publish('display current category', currentCategory)
+      PubSub.publish('display category header', currentCategory)
     },
     // render: () => {
     //   coordinator.renderTasks()
@@ -37,18 +41,18 @@ const coordinator = (() => {
 manipulateDOM.initialize()
 taskData.initialize()
 coordinator.renderCategories()
-coordinator.renderCurrentCategory()
+coordinator.renderCategoryHeader()
 coordinator.renderTasks()
 
 PubSub.subscribe('clear and render tasks', () => {
   manipulateDOM.clearContent()
   coordinator.renderTasks()
-  coordinator.renderCurrentCategory()
+  coordinator.renderCategoryHeader()
 })
 PubSub.subscribe('clear and render categories', () => {
   manipulateDOM.clearCategories()
   coordinator.renderCategories()
   manipulateDOM.clearContent()
   coordinator.renderTasks()
-  coordinator.renderCurrentCategory()
+  coordinator.renderCategoryHeader()
 })

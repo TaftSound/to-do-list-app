@@ -1,6 +1,6 @@
 import calendarIcon from '../images/cal-clock.svg'
 import plusIcon from '../images/plus-circle-outline.svg'
-import xIcon from '../images/close-box-outline.svg'
+import xIcon from '../images/close.svg'
 import PubSub from 'pubsub-js'
 
 const header = document.createElement('div')
@@ -122,7 +122,8 @@ const createNewCategoryButton = () => {
   const newFragment = new DocumentFragment()
   const newCategoryButton = document.createElement('button')
   newCategoryButton.classList.add('new-category-button')
-  newCategoryButton.textContent = 'Add Category'
+  newCategoryButton.innerHTML = plusIcon
+  // newCategoryButton.textContent = 'Add Category'
   newFragment.appendChild(newCategoryButton)
   
   newCategoryButton.addEventListener('click', () => {
@@ -132,13 +133,14 @@ const createNewCategoryButton = () => {
   return newFragment
 }
 
-const createNewCategory = (categoryName) => {
+const createNewCategory = (categoryName, isCurrentCategory) => {
   const newFragment = new DocumentFragment()
   const categoryContainer = document.createElement('div')
   const category = document.createElement('h3')
   const deleteButton = document.createElement('div')
 
   categoryContainer.classList.add('category-button')
+  if (isCurrentCategory) { categoryContainer.classList.add('selected') }
   category.textContent = categoryName
   deleteButton.innerHTML = xIcon
 
@@ -147,7 +149,7 @@ const createNewCategory = (categoryName) => {
   categoryContainer.appendChild(deleteButton)
   
 
-  categoryContainer.addEventListener('click', () => {
+  categoryContainer.addEventListener('click', (event) => {
     PubSub.publish('change category', categoryName)
   })
   deleteButton.addEventListener('click', (event) => {
@@ -252,8 +254,8 @@ const removeNewTaskButton = () => {
   const newTaskButton = document.getElementsByClassName('new-task-button')
   newTaskButton[0].remove()
 }
-const displayCategory = (category) => {
-  const newCategory = createNewCategory(category)
+const displayCategory = (category, isCurrentCategory) => {
+  const newCategory = createNewCategory(category, isCurrentCategory)
   sidebar.appendChild(newCategory)
 }
 const displayNewCategoryButton = () => {
@@ -266,7 +268,7 @@ const removeNewCategoryButton = () => {
   )
   newCategoryButton[0].remove()
 }
-const displayCurrentCategory = (currentCategory) => {
+const displayCategoryHeader = (currentCategory) => {
   const categoryHeader = document.createElement('h2')
   categoryHeader.textContent = currentCategory
   content.prepend(categoryHeader)
@@ -296,13 +298,16 @@ PubSub.subscribe('display new task button', () => {
   displayNewTaskButton()
 })
 PubSub.subscribe('display category', (msg, category) => {
-  displayCategory(category)
+  displayCategory(category, false)
+})
+PubSub.subscribe('display current category', (msg, category) => {
+  displayCategory(category, true)
 })
 PubSub.subscribe('display new category button', () => {
   displayNewCategoryButton()
 })
-PubSub.subscribe('display current category', (msg, category) => {
-  displayCurrentCategory(category)
+PubSub.subscribe('display category header', (msg, categoryName) => {
+  displayCategoryHeader(categoryName)
 })
 
 // Module to be exported starts here =================================

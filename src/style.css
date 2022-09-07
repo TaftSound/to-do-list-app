@@ -45,9 +45,7 @@ body {
   align-self: center;
 }
 .sidebar h3 {
-  color: var(--dark-grey);
   margin: 0px;
-  /* font-size: 17px; */
   font-weight: 900;
 }
 
@@ -422,48 +420,77 @@ textarea:focus {
 
 /* New category Button ==================================== */
 .new-category-button {
-  margin-top: 25px;
-  align-self: center;
-  border: solid 2px var(--medium-grey);
-  border-radius: 7.5px;
-  padding: 10px 15px;
-  font-size: 17px;
-  font-weight: 900;
-  font-family: var(--main-font);
-  color: var(--dark-grey);
-  background-color: var(--light-grey);
-  transition: 0.1s;
-  box-shadow: 2px 2px 8px rgb(0, 0, 0, 0.2);
-}
-.new-category-button:hover {
-  box-shadow: 4px 4px 10px rgb(0, 0, 0, 0.3);
-  transform: translateY(-1px);
-  border-color: var(--accent-color);
-}
-.category-button {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 15px;
+  align-self: space-between;
+  height: 45px;
+  padding: 5px 15px;
+  margin: 4px;
   background-color: var(--light-grey);
   border: solid 2px var(--extra-light-grey);
   border-radius: 7.5px;
-  margin: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.2s;
 }
-.category-button div{
-  height: 23px;
-}
-.category-button:hover svg {
-  height: 23px;
+.new-category-button svg {
+  height: 30px;
   fill: var(--medium-grey);
+  transition: 0.3s;
 }
-.category-button:hover {
-  opacity: 100%;
+.new-category-button:hover {
   box-shadow: 2px 2px 3px rgb(0, 0, 0, 0.1);
   transform: translateY(-1px);
   background-color: var(--extra-light-grey);
-  /* border-color: var(--medium-grey); */
   cursor: pointer;
+}
+.new-category-button:hover svg {
+fill: var(--dark-grey);
+}
+.category-button {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  height: 45px;
+  padding: 5px 15px;
+  margin: 4px;
+  border: solid 2px var(--extra-light-grey);
+  border-radius: 7.5px;
+  background-color: var(--light-grey);
+  color: var(--medium-grey);
+  transition: .15s;
+}
+.category-button.selected {
+  color: var(--dark-grey);
+  background-color: var(--extra-light-grey);
+}
+.category-button div {
+  height: 18px;
+}
+.category-button svg {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  height: 18px;
+  fill: transparent;
+  stroke-width: .5px;
+}
+.category-button:hover svg {
+  transition: .15s;
+  fill: var(--medium-grey);
+}
+.category-button:hover {
+  box-shadow: 2px 2px 3px rgb(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  background-color: var(--extra-light-grey);
+  color: var(--dark-grey);
+  cursor: pointer;
+}
+.category-button:hover:active {
+  transition: .05s;
+  box-shadow: 0px 0px 0px rgb(0, 0, 0, 0.0);
+  transform: translateY(0px);
 }
 .category-button svg:hover {
   fill: var(--dark-grey);
