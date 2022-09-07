@@ -1,5 +1,6 @@
 import calendarIcon from '../images/cal-clock.svg'
 import plusIcon from '../images/plus-circle-outline.svg'
+import xIcon from '../images/close-box-outline.svg'
 import PubSub from 'pubsub-js'
 
 const header = document.createElement('div')
@@ -123,7 +124,7 @@ const createNewCategoryButton = () => {
   newCategoryButton.classList.add('new-category-button')
   newCategoryButton.textContent = 'Add Category'
   newFragment.appendChild(newCategoryButton)
-
+  
   newCategoryButton.addEventListener('click', () => {
     PubSub.publish('open category form')
   })
@@ -135,10 +136,16 @@ const createNewCategory = (categoryName) => {
   const newFragment = new DocumentFragment()
   const categoryContainer = document.createElement('div')
   const category = document.createElement('h3')
+  const deleteButton = document.createElement('div')
+
   categoryContainer.classList.add('category-button')
   category.textContent = categoryName
+  deleteButton.innerHTML = xIcon
+
   newFragment.appendChild(categoryContainer)
   categoryContainer.appendChild(category)
+  categoryContainer.appendChild(deleteButton)
+  
 
   categoryContainer.addEventListener('click', () => {
     PubSub.publish('change category', categoryName)
