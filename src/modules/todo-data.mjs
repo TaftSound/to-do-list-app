@@ -14,11 +14,8 @@ const setCurrentCategory = (selectedCategory) => {
 const createCategory = (categoryName, existingOrder) => {
   const newTaskMap = new Map()
   newTaskMap.set('name', categoryName)
-  if (existingOrder) { newTaskMap.set('order', existingOrder) }
-  else {
-    newTaskMap.set('order', categoryOrderNumber)
-    categoryOrderNumber++
-  }
+  newTaskMap.set('order', categoryOrderNumber)
+  categoryOrderNumber++
   categoryMap.set(categoryName, newTaskMap)
   setCurrentCategory(categoryName)
 }
@@ -45,14 +42,24 @@ const loadFromStorage = () => {
     return
   }
   const keys = Object.keys(localStorage)
+  
+  const orderedCategoryArray = []
+
   for (const key of keys) {
     if (key === 'category') { continue }
-    const returnedTaskArray = JSON.parse(localStorage.getItem(key))
-    createCategory(key, returnedTaskArray[1])
-    for (let i = 2; i < returnedTaskArray.length; i++) {
-      addTask(...returnedTaskArray[i])
+    const parsedCategory = JSON.parse(localStorage.getItem(key))
+    const index = parsedCategory[1]
+    orderedCategoryArray[index] = parsedCategory
+  }
+
+  for (let i = 1; i < orderedCategoryArray.length; i++) {
+    const categoryData = orderedCategoryArray[i]
+    createCategory(categoryData[0], categoryData[1])
+    for (let i = 2; i < categoryData.length; i++) {
+      addTask(...categoryData[i])
     }
   }
+  console.log(categoryMap)
   currentCategory = localStorage.getItem('category')
 }
 

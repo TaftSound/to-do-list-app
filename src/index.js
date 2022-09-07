@@ -17,14 +17,8 @@ const coordinator = (() => {
     },
     renderCategories: () => {
       const categoryMap = taskData.getCategories()
-      const categoryArray = []
       for (const category of categoryMap.values()) {
-        const index = category.get('order')
-        categoryArray[index] = category
-      }
-      for (const index in categoryArray) {
-        const categoryName = categoryArray[index].get('name')
-        PubSub.publish('display category', categoryName)
+        PubSub.publish('display category', category.get('name'))
       }
       PubSub.publish('display new category button')
     },
