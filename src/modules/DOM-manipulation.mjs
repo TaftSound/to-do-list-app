@@ -37,9 +37,10 @@ const createNewTaskForm = () => {
   dateInput.type = 'date'
   taskLabel.textContent = 'Task:'
   taskInput.type = 'text'
+  taskInput.setAttribute('required', true)
   notesLabel.textContent = 'Notes:'
   submitButton.textContent = 'Submit'
-  submitButton.type = 'button'
+  submitButton.type = 'submit'
 
   newFragment.appendChild(formContainer)
   formContainer.appendChild(form)
@@ -51,7 +52,8 @@ const createNewTaskForm = () => {
   form.appendChild(notesInput)
   form.appendChild(submitButton)
 
-  submitButton.addEventListener('click', () => {
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
     PubSub.publish('send task data', [
       taskInput.value,
       dateInput.value,
@@ -101,8 +103,9 @@ const createNewCategoryForm = () => {
   formContainer.classList.add('new-category-form')
   categoryLabel.textContent = 'New Category:'
   categoryInput.type = 'text'
+  categoryInput.setAttribute('required', true)
   submitButton.textContent = 'Submit'
-  submitButton.type = 'button'
+  submitButton.type = 'submit'
 
   newFragment.appendChild(formContainer)
   formContainer.appendChild(form)
@@ -110,7 +113,8 @@ const createNewCategoryForm = () => {
   form.appendChild(categoryInput)
   form.appendChild(submitButton)
 
-  submitButton.addEventListener('click', () => {
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
     PubSub.publish('send category data', categoryInput.value)
     PubSub.publish('category form submitted')
   })

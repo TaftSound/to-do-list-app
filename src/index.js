@@ -37,7 +37,7 @@ const coordinator = (() => {
     // },
   }
 })()
-
+console.log('page reloaded')
 manipulateDOM.initialize()
 taskData.initialize()
 coordinator.renderCategories()
