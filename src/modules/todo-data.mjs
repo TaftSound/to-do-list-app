@@ -20,6 +20,24 @@ const createCategory = (categoryName, existingOrder) => {
   setCurrentCategory(categoryName)
 }
 
+const deleteCategory = (categoryName) => {
+  if (currentCategory === categoryName) {
+    const nextCategory = getNextCategory(categoryName)
+    setCurrentCategory(nextCategory)
+    localStorage.setItem('category', nextCategory)
+  }
+  categoryMap.delete(categoryName)
+  localStorage.removeItem(categoryName)
+}
+
+const getNextCategory = (categoryName) => {
+  const index = categoryMap.get(categoryName).get('order')
+  const allCategories = Array.from(categoryMap.values())
+  const nextCategory = allCategories[index]
+  if (!nextCategory) { return '' }
+  return nextCategory.get('name')
+}
+
 const addTask = (task, dueDate, notes, oldKey) => {
   const newTask = [task, dueDate, notes, currentTaskKey]
   const category = categoryMap.get(currentCategory)
@@ -54,18 +72,27 @@ const loadFromStorage = () => {
 
   for (let i = 1; i < orderedCategoryArray.length; i++) {
     const categoryData = orderedCategoryArray[i]
+    if (!categoryData) { continue }
     createCategory(categoryData[0], categoryData[1])
     for (let i = 2; i < categoryData.length; i++) {
       addTask(...categoryData[i])
     }
   }
-  console.log(categoryMap)
   currentCategory = localStorage.getItem('category')
 }
 
 
 PubSub.subscribe('send category data', (msg, category) => {
   createCategory(category)
+  updateLocalStorage()
+  PubSub.publish('clear and render categories')
+})
+PubSub.subscribe('delete category', (msg, category) => {
+  deleteCategory(category)
+  PubSub.publish('clear and render categories')
+})
+PubSub.subscribe('change category', (msg, category) => {
+  setCurrentCategory(category)
   updateLocalStorage()
   PubSub.publish('clear and render categories')
 })
@@ -78,11 +105,6 @@ PubSub.subscribe('delete task', (msg, key) => {
   deleteTask(key)
   updateLocalStorage()
   PubSub.publish('clear and render tasks')
-})
-PubSub.subscribe('change category', (msg, category) => {
-  setCurrentCategory(category)
-  updateLocalStorage()
-  PubSub.publish('clear and render categories')
 })
 
 const taskData = {

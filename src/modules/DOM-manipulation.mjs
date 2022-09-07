@@ -150,6 +150,10 @@ const createNewCategory = (categoryName) => {
   categoryContainer.addEventListener('click', () => {
     PubSub.publish('change category', categoryName)
   })
+  deleteButton.addEventListener('click', (event) => {
+    event.stopPropagation()
+    PubSub.publish('delete category', categoryName)
+  })
 
   return newFragment
 }
