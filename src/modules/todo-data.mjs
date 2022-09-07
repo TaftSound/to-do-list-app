@@ -27,14 +27,27 @@ const deleteCategory = (categoryName) => {
     localStorage.setItem('category', nextCategory)
   }
   categoryMap.delete(categoryName)
+  resetMapOrder()
   localStorage.removeItem(categoryName)
+}
+
+const resetMapOrder = () => {
+  let orderNumber = 1
+  categoryMap.forEach((category) => {
+    category.set('order', orderNumber)
+    orderNumber++
+  })
 }
 
 const getNextCategory = (categoryName) => {
   const index = categoryMap.get(categoryName).get('order')
   const allCategories = Array.from(categoryMap.values())
   const nextCategory = allCategories[index]
-  if (!nextCategory) { return '' }
+  if (!nextCategory) {
+    const previousCategory = allCategories[(index - 2)]
+    if (!previousCategory) { return '' }
+    return previousCategory.get('name')
+  }
   return nextCategory.get('name')
 }
 
