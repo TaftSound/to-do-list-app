@@ -39,6 +39,7 @@ const createNewTaskForm = () => {
   taskInput.type = 'text'
   taskInput.setAttribute('required', true)
   taskInput.setAttribute('maxlength', 32)
+  taskInput.setAttribute('id', 'task-input')
   notesLabel.textContent = 'Notes:'
   submitButton.textContent = 'Submit'
   submitButton.type = 'submit'
@@ -106,6 +107,7 @@ const createNewCategoryForm = () => {
   categoryInput.type = 'text'
   categoryInput.setAttribute('required', true)
   categoryInput.setAttribute('maxlength', 30)
+  categoryInput.setAttribute('id', 'category-input')
   submitButton.textContent = 'Submit'
   submitButton.type = 'submit'
 
@@ -233,6 +235,7 @@ const displayNewTaskForm = () => {
   const newTaskForm = createNewTaskForm()
   document.body.appendChild(backgroundOverlay)
   content.appendChild(newTaskForm)
+  document.getElementById('task-input').focus()
 }
 const removeNewTaskForm = () => {
   const overlay = document.getElementsByClassName('overlay')
@@ -245,6 +248,7 @@ const displayNewCategoryForm = () => {
   const newCategoryForm = createNewCategoryForm()
   document.body.appendChild(backgroundOverlay)
   content.appendChild(newCategoryForm)
+  document.getElementById('category-input').focus()
 }
 const removeNewCategoryForm = () => {
   const overlay = document.getElementsByClassName('overlay')
