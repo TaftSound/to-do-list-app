@@ -38,6 +38,7 @@ const createNewTaskForm = () => {
   taskLabel.textContent = 'Task:'
   taskInput.type = 'text'
   taskInput.setAttribute('required', true)
+  taskInput.setAttribute('maxlength', 32)
   notesLabel.textContent = 'Notes:'
   submitButton.textContent = 'Submit'
   submitButton.type = 'submit'
@@ -104,6 +105,7 @@ const createNewCategoryForm = () => {
   categoryLabel.textContent = 'New Category:'
   categoryInput.type = 'text'
   categoryInput.setAttribute('required', true)
+  categoryInput.setAttribute('maxlength', 30)
   submitButton.textContent = 'Submit'
   submitButton.type = 'submit'
 
